@@ -1,0 +1,620 @@
+﻿@page
+@model IndexModel
+@using BusinessLogicLayer.Dtos
+@{
+    ViewData["Title"] = "Home page";
+    var popular = ViewData["PopularProducts"] as List<ProductDto>;
+    var bestSellers = ViewData["BestSellerProducts"] as List<ProductDto>;
+}
+
+
+<!-- Hero Start -->
+<div class="section argani-hero-section">
+    <div class="container-fluid custom-container">
+        <div class="row">
+            <img class="shape-1" src="~/assets/images/shape/hero-shape2.png" alt="">
+            <div class="col-xl-7">
+                <div class="hero-banner">
+                    <div class="hero-banner-img banner-img-big">
+                        <img src="~/assets/images/hero6-big.jpg" alt="">
+                    </div>
+                    <!-- Hero Content Start -->
+                    <div class="hero-content">
+                        <h3 class="sub-title">Starting at only $5.00 </h3>
+                        <h2 class="title" data-aos="fade-up" data-aos-delay="800">
+                            100% Organic Green fresh
+                            vegetable
+                        </h2>
+                        <div class="hero-btn" data-aos="fade-up" data-aos-delay="1000">
+                            <a class="btn" href="/Shop">Shop Now</a>
+                        </div>
+                    </div>
+                    <!-- Hero Content End -->
+                </div>
+            </div>
+            <div class="col-xl-5">
+                <div class="row">
+                    <div class="col-xl-12 col-lg-6">
+                        <!-- Hero Banner Start -->
+                        <div class="hero-banner hero-banner-sm">
+                            <div class="hero-banner-img">
+                                <img src="~/assets/images/hero6-sm1.jpg" alt="">
+                            </div>
+                            <!-- Hero Content Start -->
+                            <div class="hero-content">
+                                <h3 class="sub-title">Starting at only $5.00 </h3>
+                                <h2 class="title" data-aos="fade-up" data-aos-delay="800">
+                                    Discover <br> healthy
+                                    meats
+                                </h2>
+                                <div class="hero-btn" data-aos="fade-up" data-aos-delay="1000">
+                                    <a class="btn btn-2" href="/Shop">Shop Now</a>
+                                </div>
+                            </div>
+                            <!-- Hero Content End -->
+                        </div>
+                        <!-- Hero Banner End -->
+                    </div>
+                    <div class="col-xl-12 col-lg-6">
+                        <!-- Hero Banner Start -->
+                        <div class="hero-banner hero-banner-sm">
+                            <div class="hero-banner-img">
+                                <img src="~/assets/images/hero6-sm3.jpg" alt="">
+                            </div>
+                            <!-- Hero Content Start -->
+                            <div class="hero-content">
+                                <h3 class="sub-title color-2">Starting at only $5.00 </h3>
+                                <h2 class="title" data-aos="fade-up" data-aos-delay="800">
+                                    Best premium <br>
+                                    fruits
+                                </h2>
+                                <div class="hero-btn" data-aos="fade-up" data-aos-delay="1000">
+                                    <a class="btn" href="/Shop">Shop Now</a>
+                                </div>
+                            </div>
+                            <!-- Hero Content End -->
+                        </div>
+                        <!-- Hero Banner End -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Hero End -->
+<!-- Category Start -->
+<div class="section argani-category-section section-padding-02">
+    <div class="container">
+        <!-- Category Wrap Start -->
+        <div class="category-slider-wrap">
+            <div class="swiper-container category-active">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <!-- Category Item Start -->
+                        <div class="category-item text-center">
+                            <img class="shape-1" src="~/assets/images/shape/cat-shape-1.png" alt="">
+                            <div class="category-img">
+                                <img src="~/assets/images/cat-1.jpg" alt="">
+                            </div>
+                            <div class="category-content">
+                                <h3 class="title"><a href="/Shop">Organic Vegetable</a></h3>
+                                <a class="read-more" href="/Shop">
+                                    View all <i class="fas fa-angle-double-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Category Item End -->
+                    </div>
+                    <div class="swiper-slide">
+                        <!-- Category Item Start -->
+                        <div class="category-item text-center">
+                            <img class="shape-1" src="~/assets/images/shape/cat-shape-1.png" alt="">
+                            <div class="category-img">
+                                <img src="~/assets/images/cat-2.jpg" alt="">
+                            </div>
+                            <div class="category-content">
+                                <h3 class="title"><a href="/Shop">Fresh Fish</a></h3>
+                                <a class="read-more" href="/Shop">
+                                    View all <i class="fas fa-angle-double-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Category Item End -->
+                    </div>
+                    <div class="swiper-slide">
+                        <!-- Category Item Start -->
+                        <div class="category-item text-center">
+                            <img class="shape-1" src="~/assets/images/shape/cat-shape-1.png" alt="">
+                            <div class="category-img">
+                                <img src="~/assets/images/cat-3.jpg" alt="">
+                            </div>
+                            <div class="category-content">
+                                <h3 class="title"><a href="/Shop">Organic Fruits </a></h3>
+                                <a class="read-more" href="/Shop">
+                                    View all <i class="fas fa-angle-double-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Category Item End -->
+                    </div>
+                    <div class="swiper-slide">
+                        <!-- Category Item Start -->
+                        <div class="category-item text-center">
+                            <img class="shape-1" src="~/assets/images/shape/cat-shape-1.png" alt="">
+                            <div class="category-img">
+                                <img src="~/assets/images/cat-4.jpg" alt="">
+                            </div>
+                            <div class="category-content">
+                                <h3 class="title"><a href="/Shop">Organic Meat</a></h3>
+                                <a class="read-more" href="/Shop">
+                                    View all <i class="fas fa-angle-double-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Category Item End -->
+                    </div>
+                </div>
+
+                <!-- Add Pagination -->
+                <div class="swiper-pagination"></div>
+            </div>
+
+        </div>
+        <!-- Category Wrap End -->
+    </div>
+</div>
+<!-- Category End -->
+<!-- Product Start -->
+<div class="section argani-product-section section-padding-02">
+    <div class="container">
+        <div class="product-wrap">
+            <div class="section-title text-center">
+                <h2 class="title">Featured Products</h2>
+            </div>
+            <div class="product-content-wrap">
+                <div class="row g-0">
+                    <div class="col-xl-3">
+                        <!-- Product Banner Start -->
+                        <div class="product-banner text-center">
+                            <div class="banner-img">
+                                <img src="~/assets/images/pro-banner1.jpg" alt="">
+                            </div>
+                            <div class="banner-content">
+                                <h3 class="sub-title">Get <span>25%</span> off</h3>
+                                <h2 class="title">100% Fresh Fruits </h2>
+                                <a class="btn btn-2" href="/Shop">Shop Now</a>
+                            </div>
+                        </div>
+                        <!-- Product Banner End -->
+                    </div>
+                    <div class="col-xl-9">
+                        <div class="product-slider-wrap">
+                            <div class="swiper-container product-active">
+                                <div class="swiper-wrapper">
+
+                                    @if (popular != null && popular.Any())
+                                    {
+                                        @foreach (var p in popular)
+                                        {
+                                            <div class="swiper-slide">
+                                                <div class="single-product">
+                                                    <div class="product-img text-center">
+                                                        <a asp-page="/Shop/Detail" asp-route-id="@p.ProductId">
+                                                            <img src="~/assets/images/product-fruit/@p.Image"
+                                                                 alt="@p.ProductName"
+                                                                 class="img-fluid rounded-3"
+                                                                 style="height: 225px; object-fit: cover;" />
+                                                        </a>
+                                                    </div>
+                                                    <div class="product-content text-center">
+                                                        <h3 class="title">
+                                                            <a asp-page="/Shop/Detail" asp-route-id="@p.ProductId">
+                                                                @p.ProductName
+                                                            </a>
+                                                        </h3>
+                                                        <div class="rating"> <div class="rating-star"> <div class="rating-active" style="width: 100%;"></div> </div> </div>
+                                                        <div class="price-cart d-flex justify-content-center align-items-center">
+                                                            <div class="price me-3">
+                                                                <span class="sale-price text-success fw-bold">
+                                                                    $@p.Price
+                                                                </span>
+                                                            </div>
+                                                            <div class="cart">
+                                                                <button class="cart-icon btn btn-link p-0 position-relative"
+                                                                        type="button"
+                                                                        data-product-id="@p.ProductId"
+                                                                        data-product-name="@p.ProductName"
+                                                                        data-price="@p.Price"
+                                                                        data-image-url="@p.Image">
+                                                                    <i class="fas fa-shopping-basket"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="swiper-slide">
+                                            <p class="text-muted">Không có sản phẩm phổ biến nào.</p>
+                                        </div>
+                                    }
+
+                                </div>
+
+                                <!-- Add Pagination / Navigation -->
+                                <div class="product-arrow swiper-button-next"></div>
+                                <div class="product-arrow swiper-button-prev"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Product End -->
+<!-- Product Start -->
+<div class="section argani-product-section section-padding">
+    <div class="container">
+        <div class="product-wrap">
+            <div class="section-title text-center">
+                <h2 class="title">Best Sellers</h2>
+            </div>
+            <div class="product-content-wrap">
+                <div class="row g-0">
+                    <div class="col-xl-3">
+                        <!-- Product Banner Start -->
+                        <div class="product-banner text-center">
+                            <div class="banner-img">
+                                <img src="~/assets/images/pro-banner3.jpg" alt="">
+                            </div>
+                            <div class="banner-content">
+                                <h3 class="sub-title">Get <span>25%</span> off</h3>
+                                <h2 class="title">100% Fresh Fruits </h2>
+                                <a class="btn btn-2" href="/Shop">Shop Now</a>
+                            </div>
+                        </div>
+                        <!-- Product Banner End -->
+                    </div>
+                    <div class="col-xl-9">
+                        <div class="product-slider-wrap">
+                            <div class="swiper-container product-active">
+                                <div class="swiper-wrapper">
+                                    @if (bestSellers != null && bestSellers.Any())
+                                    {
+                                        @foreach (var p in bestSellers)
+                                        {
+                                            <div class="swiper-slide">
+                                                <div class="single-product">
+                                                    <div class="product-img text-center">
+                                                        <a asp-page="/Shop/Detail" asp-route-id="@p.ProductId">
+                                                            <img src="~/assets/images/product-fruit/@p.Image"
+                                                                 alt="@p.ProductName"
+                                                                 class="img-fluid rounded-3"
+                                                                 style="height: 225px; object-fit: cover;" />
+                                                        </a>
+                                                    </div>
+                                                    <div class="product-content text-center">
+                                                        <h3 class="title">
+                                                            <a asp-page="/Shop/Detail" asp-route-id="@p.ProductId">
+                                                                @p.ProductName
+                                                            </a>
+                                                        </h3>
+                                                        <div class="rating"> <div class="rating-star"> <div class="rating-active" style="width: 100%;"></div> </div> </div>
+                                                        <div class="price-cart d-flex justify-content-center align-items-center">
+                                                            <div class="price me-3">
+                                                                <span class="sale-price text-success fw-bold">
+                                                                    $@p.Price
+                                                                </span>
+                                                            </div>
+                                                            <div class="cart">
+                                                                <button class="cart-icon btn btn-link p-0 position-relative"
+                                                                        type="button"
+                                                                        data-product-id="@p.ProductId"
+                                                                        data-product-name="@p.ProductName"
+                                                                        data-price="@p.Price"
+                                                                        data-image-url="@p.Image">
+                                                                    <i class="fas fa-shopping-basket"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="swiper-slide text-center py-5">
+                                            <p class="text-muted">Không có sản phẩm bán chạy nào.</p>
+                                        </div>
+                                    }
+                                </div>
+
+                                <!-- Add Navigation Buttons -->
+                                <div class="product-arrow swiper-button-next"></div>
+                                <div class="product-arrow swiper-button-prev"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Product End -->
+<!-- Beat Deal Start -->
+<div class="section argani-best-deal-section section-padding-03"
+     style="background-image: url(~/assets/images/bg/best-deal-img1.jpg);">
+    <div class="shape-1">
+        <img src="~/assets/images/shape/count-down-s1.png" alt="">
+    </div>
+    <div class="container">
+        <!-- Beat Deal Wrapper Start -->
+        <div class="best-deal-wrap-02">
+            <div class="row align-items-center">
+                <div class="col-lg-12">
+                    <!-- Beat Deal Content Start -->
+                    <div class="best-deal-content text-center">
+                        <div class="best-deal-title-wrap">
+                            <p class="discount">Up to 50% off </p>
+                            <div class="title-bg1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="460px" height="167px">
+                                    <path fill-rule="evenodd" fill="rgb(255, 255, 255)"
+                                          d="M0.0,83.499 L415.957,0.0 L459.999,112.970 L29.361,166.999 L0.0,83.499 Z" />
+                                </svg>
+                                <h3 class="sub-title">Deals Of The Day</h3>
+                            </div>
+                            <div class="title-bg2">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     xmlns:xlink="http://www.w3.org/1999/xlink" width="630px" height="228px">
+                                    <path fill-rule="evenodd" fill="rgb(255, 125, 9)"
+                                          d="M0.0,97.235 L569.680,0.0 L629.999,154.235 L40.212,227.999 L0.0,97.235 Z" />
+                                </svg>
+                                <h2 class="title">Hurry up</h2>
+                            </div>
+
+                        </div>
+                        <!-- Countdown Start -->
+                        <div class="best-deal-countdown">
+                            <div class="argani-countdown countdown" data-countdown="2024/8/28"
+                                 data-format="short">
+                                <div class="single-countdown">
+                                    <span class="count countdown__time daysLeft"></span>
+                                    <span class="value countdown__time daysText"></span>
+                                </div>
+                                <div class="single-countdown countdown-2">
+                                    <span class="count countdown__time hoursLeft"></span>
+                                    <span class="value countdown__time hoursText"></span>
+                                </div>
+                                <div class="single-countdown countdown-3">
+                                    <span class="count countdown__time minsLeft"></span>
+                                    <span class="value countdown__time minsText"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Countdown End -->
+                        <a class="btn" href="/Shop">Shop Now</a>
+                    </div>
+                    <!-- Beat Deal Content End -->
+                </div>
+            </div>
+        </div>
+        <!-- Beat Deal Wrapper End -->
+    </div>
+</div>
+<!-- Beat Deal End -->
+<!-- Brand Logo Start -->
+<div class="section argani-brand-section section-padding-02">
+    <div class="container">
+        <div class="section-title text-center">
+            <h2 class="title">Partner Brands</h2>
+        </div>
+        <!-- Brand Wrapper Start -->
+        <div class="brand-wrapper text-center">
+
+            <!-- Brand Active Start -->
+            <div class="brand-active">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <!-- Single Brand Start -->
+                        <div class="swiper-slide">
+                            <div class="single-brand">
+                                <img src="~/assets/images/brand/brand-1.png" alt="Brand">
+                            </div>
+                        </div>
+                        <!-- Single Brand End -->
+                        <!-- Single Brand Start -->
+                        <div class="swiper-slide">
+                            <div class="single-brand">
+                                <img src="~/assets/images/brand/brand-2.png" alt="Brand">
+                            </div>
+                        </div>
+                        <!-- Single Brand End -->
+                        <!-- Single Brand Start -->
+                        <div class="swiper-slide">
+                            <div class="single-brand">
+                                <img src="~/assets/images/brand/brand-3.png" alt="Brand">
+                            </div>
+                        </div>
+                        <!-- Single Brand End -->
+                        <!-- Single Brand Start -->
+                        <div class="swiper-slide">
+                            <div class="single-brand">
+                                <img src="~/assets/images/brand/brand-4.png" alt="Brand">
+                            </div>
+                        </div>
+                        <!-- Single Brand End -->
+                        <!-- Single Brand Start -->
+                        <div class="swiper-slide">
+                            <div class="single-brand">
+                                <img src="~/assets/images/brand/brand-5.png" alt="Brand">
+                            </div>
+                        </div>
+                        <!-- Single Brand End -->
+                        <!-- Single Brand Start -->
+                        <div class="swiper-slide">
+                            <div class="single-brand">
+                                <img src="~/assets/images/brand/brand-6.png" alt="Brand">
+                            </div>
+                        </div>
+                        <!-- Single Brand End -->
+                    </div>
+
+                </div>
+                <!-- Add Pagination -->
+                <div class="brand-arrow swiper-button-next"></div>
+                <div class="brand-arrow swiper-button-prev"></div>
+            </div>
+            <!-- Brand Active End -->
+        </div>
+        <!-- Brand Wrapper End -->
+    </div>
+</div>
+<!-- Brand Logo End -->
+<!-- Testimonial Start -->
+<div class="section argani-testimonial-section section-padding"
+     style="background-image: url(~/assets/images/bg/testi-bg.jpg);">
+    <div class="shape-1">
+        <img src="~/assets/images/shape/testi-shape2.png" alt="">
+    </div>
+    <div class="section-title text-center">
+        <h3 class="sub-title">Testimonial</h3>
+        <h2 class="title">Why customers love us</h2>
+    </div>
+    <div class="container">
+        <!-- Testimonial Wrap Start -->
+        <div class="testimonial-wrap">
+            <!-- Testimonial Slider Wrap Start -->
+            <div class="testimonial-slider-wrap">
+                <div class="swiper-container testimonial-active">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <!-- Single Testimonial Start -->
+                            <div class="single-testimonial">
+                                <div class="testimonial-img">
+                                    <img src="~/assets/images/testi-bg1.png" alt="">
+                                </div>
+                                <div class="testimonial-content">
+                                    <p>
+                                        Objectively pontificate quality models before intuitive information.
+                                        Dramatically recaptiualize multi functional materials.
+                                    </p>
+                                    <div class="author-text">
+                                        <h5 class="name">Mike Holder</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Single Testimonial End -->
+                        </div>
+                        <div class="swiper-slide">
+                            <!-- Single Testimonial Start -->
+                            <div class="single-testimonial">
+                                <div class="testimonial-img">
+                                    <img src="~/assets/images/testi-bg1.png" alt="">
+                                </div>
+                                <div class="testimonial-content">
+                                    <p>
+                                        Objectively pontificate quality models before intuitive information.
+                                        Dramatically recaptiualize multi functional materials.
+                                    </p>
+                                    <div class="author-text">
+                                        <h5 class="name">Mike Holder</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Single Testimonial End -->
+                        </div>
+                        <div class="swiper-slide">
+                            <!-- Single Testimonial Start -->
+                            <div class="single-testimonial">
+                                <div class="testimonial-img">
+                                    <img src="~/assets/images/testi-bg1.png" alt="">
+                                </div>
+                                <div class="testimonial-content">
+                                    <p>
+                                        Objectively pontificate quality models before intuitive information.
+                                        Dramatically recaptiualize multi functional materials.
+                                    </p>
+                                    <div class="author-text">
+                                        <h5 class="name">Mike Holder</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Single Testimonial End -->
+                        </div>
+                    </div>
+
+                    <!-- Add Pagination -->
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+            <!-- Testimonial Slider Wrap End -->
+        </div>
+        <!-- Testimonial Wrap End -->
+    </div>
+</div>
+<!-- Testimonial End -->
+<!-- Process Start -->
+<div class="section argani-process-section section-padding">
+    <div class="container">
+        <!-- Process Wrap Start -->
+        <div class="process-wrap">
+            <div class="row">
+                <div class="col-md-4 col-sm-6">
+                    <!-- Process Item Start -->
+                    <div class="process-item text-center">
+                        <div class="shape-1">
+                            <img src="~/assets/images/shape/process-shape1.png" alt="">
+                        </div>
+                        <div class="process-icon">
+                            <img src="~/assets/images/process-1.jpg" alt="">
+                            <span>1</span>
+                        </div>
+                        <div class="process-content">
+                            <h3 class="title">Dicover products</h3>
+                            <p>Ut facilisis luctus elit id ornare. Aenean non sem risus. </p>
+                        </div>
+                    </div>
+                    <!-- Process Item End -->
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <!-- Process Item Start -->
+                    <div class="process-item text-center">
+                        <div class="shape-1 shape-2">
+                            <img src="~/assets/images/shape/process-shape2.png" alt="">
+                        </div>
+                        <div class="process-icon">
+                            <img src="~/assets/images/process-2.jpg" alt="">
+                            <span class="color-2">2</span>
+                        </div>
+                        <div class="process-content">
+                            <h3 class="title">Add to Cart </h3>
+                            <p>Ut facilisis luctus elit id ornare. Aenean non sem risus. </p>
+                        </div>
+                    </div>
+                    <!-- Process Item End -->
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <!-- Process Item Start -->
+                    <div class="process-item text-center">
+                        <div class="process-icon">
+                            <img src="~/assets/images/process-3.jpg" alt="">
+                            <span class="color-3">3</span>
+                        </div>
+                        <div class="process-content">
+                            <h3 class="title">Deliver your Home</h3>
+                            <p>Ut facilisis luctus elit id ornare. Aenean non sem risus. </p>
+                        </div>
+                    </div>
+                    <!-- Process Item End -->
+                </div>
+            </div>
+        </div>
+        <!-- Process Wrap End -->
+    </div>
+</div>
