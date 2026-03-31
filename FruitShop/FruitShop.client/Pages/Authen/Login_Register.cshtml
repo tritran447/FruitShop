@@ -1,0 +1,167 @@
+﻿@page
+@model FruitShop.client.Pages.Authen.Login_RegisterModel
+@{
+    ViewData["Title"] = "Login & Register";
+}
+
+<!-- Page Banner Start -->
+<div class="section page-banner-section">
+    <div class="container-fluid custom-container">
+        <div class="page-banner-wrap" style="background-image: url(/assets/images/bg/banner-bg.jpg);">
+            <img class="shape-1" src="/assets/images/shape/hero2-shape1.png" alt="">
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- Page Banner Content Start -->
+                    <div class="page-banner text-center">
+                        <h2 class="title">Login & Register</h2>
+                        <ul class="breadcrumb justify-content-center">
+                            <li class="breadcrumb-item"><a href="/Index">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Login & Register</li>
+                        </ul>
+                    </div>
+                    <!-- Page Banner Content End -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page Banner End -->
+<!-- Login & Register Start -->
+<div class="section login-register-section section-padding-02">
+    <div class="container">
+
+        <!-- Login & Register Wrapper Start -->
+        <div class="login-register-wrap">
+            <div class="row gx-5">
+                <div class="col-lg-6">
+
+                    <!-- Login & Register Box Start -->
+                    <div class="login-register-box">
+                        <!-- Section Title Start -->
+                        <div class="section-title-2">
+                            <h2 class="title">Login</h2>
+                        </div>
+                        @if (!string.IsNullOrEmpty(Model.LoginMessage))
+                        {
+                            <div class="alert @(Model.LoginSuccess ? "alert-success" : "alert-danger")">
+                                @Model.LoginMessage
+                            </div>
+                        }
+
+                        @if (TempData["VerifySuccess"] != null)
+                        {
+                            <div class="alert alert-success">
+                                @TempData["VerifySuccess"]
+                            </div>
+                        }
+                        <!-- Section Title End -->
+
+                        <div class="login-register-form">
+                            <form method="post" asp-page-handler="Login">
+                                <div class="single-form">
+                                    <input asp-for="LoginModel.Email" class="form-control" placeholder="Email" />
+                                    <span asp-validation-for="LoginModel.Email" class="text-danger"></span>
+                                </div>
+                                <div class="single-form">
+                                    <input asp-for="LoginModel.Password" type="password" class="form-control" placeholder="Password" />
+                                    <span asp-validation-for="LoginModel.Password" class="text-danger"></span>
+                                </div>
+                                <div class="form-btn">
+                                    <button type="submit" class="btn btn-primary">Login</button>
+                                </div>
+                                <div class="form-btn text-center mt-3">
+                                    <a asp-page="/Authen/ForgotPassword" class="text-decoration-underline">Forgot your password?</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- Login & Register Box End -->
+
+                </div>
+                <div class="col-lg-6">
+
+                    <!-- Login & Register Box Start -->
+                    <div class="login-register-box">
+                        <!-- Section Title Start -->
+                        <div class="section-title-2">
+                            <h2 class="title">Register</h2>
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(Model.RegisterMessage))
+                        {
+                            <div class="alert @(Model.RegisterSuccess ? "alert-success" : "alert-danger")">
+                                @Model.RegisterMessage
+                            </div>
+                        }
+                        <!-- Section Title End -->
+
+                        <div class="login-register-form">
+                            <form id="registerForm" method="post" asp-page-handler="Register">
+                                <div class="single-form">
+                                    <input asp-for="RegisterModel.FullName" class="form-control" placeholder="Full Name" />
+                                    <span asp-validation-for="RegisterModel.FullName" class="text-danger"></span>
+                                </div>
+                                <div class="single-form">
+                                    <input asp-for="RegisterModel.Email" class="form-control" placeholder="Email" />
+                                    <span asp-validation-for="RegisterModel.Email" class="text-danger"></span>
+                                </div>
+                                <div class="single-form">
+                                    <input id="pwd" asp-for="RegisterModel.Password" type="password" class="form-control" placeholder="Password" />
+                                    <span asp-validation-for="RegisterModel.Password" class="text-danger"></span>
+                                </div>
+
+                                <!-- Nơi confirm password sẽ được JS chèn vào -->
+                                <div class="single-form" id="confirmPwdContainer"></div>
+
+                                <div class="form-btn">
+                                    <button type="submit" class="btn btn-secondary">Register</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- Login & Register Box End -->
+
+                </div>
+            </div>
+        </div>
+        <!-- Login & Register Wrapper End -->
+
+    </div>
+</div>
+<!-- Login & Register End -->
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('registerForm');
+
+            const confirmContainer = document.getElementById('confirmPwdContainer');
+            const confirmInput = document.createElement('input');
+            confirmInput.type = 'password';
+            confirmInput.id = 'confirmPwd';
+            confirmInput.name = 'ConfirmPassword'; 
+            confirmInput.placeholder = 'Confirm Password';
+            confirmInput.className = 'form-control';
+            confirmContainer.appendChild(confirmInput);
+
+            const errorDiv = document.createElement('div');
+            errorDiv.id = 'confirmError';
+            errorDiv.className = 'text-danger mt-1';
+            errorDiv.style.display = 'none';
+            errorDiv.textContent = 'Passwords do not match.';
+            confirmContainer.appendChild(errorDiv);
+
+            form.addEventListener('submit', (e) => {
+                const pwd = document.getElementById('pwd').value;
+                const cpwd = document.getElementById('confirmPwd').value;
+
+                if (pwd !== cpwd) {
+                    e.preventDefault();
+                    errorDiv.style.display = 'block';
+                } else {
+                    errorDiv.style.display = 'none';
+                }
+            });
+        });
+    </script>
+}
