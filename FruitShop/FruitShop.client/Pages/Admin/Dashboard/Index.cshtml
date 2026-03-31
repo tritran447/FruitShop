@@ -1,0 +1,122 @@
+﻿@page
+@model FruitShop.client.Pages.Admin.Dashboard.IndexModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div style="margin-top:350px">
+    <h2 class="text-center mb-4">📊 Admin Dashboard</h2>
+
+    <div class="row mb-5 text-center">
+        <div class="col-md-4">
+            <div class="card bg-success text-white shadow">
+                <div class="card-body">
+                    <div>Today's Revenue</div>
+                    <h3>@Model.Revenue.Today.ToString("C")</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-info text-white shadow">
+                <div class="card-body">
+                    <div>This Month</div>
+                    <h3>@Model.Revenue.ThisMonth.ToString("C")</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-warning text-dark shadow">
+                <div class="card-body">
+                    <div>This Year</div>
+                    <h3>@Model.Revenue.ThisYear.ToString("C")</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr />
+    <h4 class="text-center mb-3">🔥 Top 5 Best-Selling Products</h4>
+    <div class="chart-container">
+        <canvas id="topProductsChart"></canvas>
+    </div>
+
+    <hr class="my-5" />
+    <h4 class="text-center mb-3">💰 Revenue Distribution</h4>
+    <div class="chart-container">
+        <canvas id="revenueChart"></canvas>
+    </div>
+
+    <hr class="my-5" />
+    <div class="text-center mt-4">
+        <h5>👥 Total Active Users: <span class="badge bg-primary fs-5">@Model.ActiveCustomerCount</span></h5>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const productLabels = @Html.Raw(Json.Serialize(Model.TopProducts.Select(p => p.ProductName)));
+            const productSales = @Html.Raw(Json.Serialize(Model.TopProducts.Select(p => p.TotalQuantitySold)));
+
+            new Chart(document.getElementById("topProductsChart"), {
+                type: "bar",
+                data: {
+                    labels: productLabels,
+                    datasets: [{
+                        label: "Units Sold",
+                        data: productSales,
+                        backgroundColor: "rgba(54, 162, 235, 0.6)",
+                        borderColor: "rgba(54, 162, 235, 1)",
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: "Top 5 Best-Selling Products"
+                        },
+                        legend: { display: false }
+                    },
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            new Chart(document.getElementById("revenueChart"), {
+                type: "doughnut",
+                data: {
+                    labels: ["Today", "This Month", "This Year"],
+                    datasets: [{
+                        data: [
+                            @Model.Revenue.Today,
+                            @Model.Revenue.ThisMonth,
+                            @Model.Revenue.ThisYear
+                        ],
+                        backgroundColor: [
+                            "rgba(255, 99, 132, 0.6)",
+                            "rgba(54, 162, 235, 0.6)",
+                            "rgba(255, 206, 86, 0.6)"
+                        ],
+                        borderColor: "#fff",
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: "Revenue Summary"
+                        }
+                    },
+                    responsive: true
+                }
+            });
+        });
+    </script>
+}
