@@ -1,0 +1,168 @@
+@page "{id:int}"
+@model FruitShop.client.Pages.Shop.DetailModel
+@{
+    ViewData["Title"] = "Shop - Detail";
+}
+
+<!-- Product Detail Start -->
+<div class="section product-details-section section-padding-02" style="margin-top: 250px">
+    <div class="container">
+        <div class="product-details-wrap">
+            <div class="row">
+                <!-- Gallery / Slides -->
+                <div class="col-md-6">
+                    <div class="product-details-slide">
+                        <div class="gallery">
+                            <div class="swiper-container">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide">
+                                        @{
+                                            var mainImgSrc = string.IsNullOrWhiteSpace(Model.Product.Image)
+                                                ? Url.Content("~/assets/images/product-fruit/no-image.svg")
+                                                : (Model.Product.Image.StartsWith("http", StringComparison.OrdinalIgnoreCase)
+                                                    ? Model.Product.Image
+                                                    : Url.Content("~/assets/images/product-fruit/" + Model.Product.Image));
+                                        }
+                                        <img src="@mainImgSrc"
+                                             alt="@Model.Product.ProductName" class="img-fluid" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Info -->
+                <div class="col-md-6">
+                    <div class="product-details-overview">
+                        <h3 class="title">@Model.Product.ProductName</h3>
+                        <div class="product-price mb-2">
+                            <span>$@Model.Product.Price.ToString("F2")</span>
+                        </div>
+
+                        <!-- Rating nếu bạn có -->
+                        <div class="product-ratting mb-3">
+                            <ul>
+                                <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                <li class="review-total"> <a href="#">( 103 Reviews )</a></li>
+                            </ul>
+                        </div>
+
+                        <p class="text mb-4">
+                            @Model.Product.Description
+                        </p>
+
+                            <div class="product-details-menu-2 mb-3">
+                                <ul class="list-inline">
+                                    <li class="list-inline-item">
+                                    <div class="Cart-plus-minus">
+                                        <input type="number"
+                                               id="qtyInput"
+                                               name="qtybutton"
+                                               value="1"
+                                               max="@Model.Product.QuantityInStock"
+                                               min="1"
+                                               class="form-control form-control-lg text-center fw-bold Cart-plus-minus-box"
+                                               style="width: 120px;" />
+                                    </div>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <button type="button" class="btn btn-primary cart-icon" title="Add to Cart"
+                                                data-product-id="@Model.Product.ProductId"
+                                                data-product-name="@Model.Product.ProductName"
+                                                data-price="@Model.Product.Price"
+                                                data-image-url="@Model.Product.Image">
+                                            <i class="fas fa-shopping-cart"></i>
+                                            <span>ADD TO Cart</span>
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        <div class="product-details-meta mt-3">
+                            <p>
+                                Categories :
+                                <span>@Model.Product.Category.CategoryName</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Product Detail End -->
+<!-- Related Products Start -->
+<div class="section argani-product-section releted-product-section section-padding">
+    <div class="container">
+        <div class="section-title text-center mb-4">
+            <h2 class="title">Related Products</h2>
+        </div>
+
+        <div class="product-content-wrap">
+            <div class="row g-0">
+                <div class="col-xl-12">
+                    <div class="product-slider-wrap">
+                        <div class="product4-active">
+                            <div class="swiper-container">
+                                <div class="swiper-wrapper">
+                                    @foreach (var rp in Model.RelatedProducts)
+                                    {
+                                        var relatedImgSrc = string.IsNullOrWhiteSpace(rp.Image)
+                                            ? Url.Content("~/assets/images/product-fruit/no-image.svg")
+                                            : (rp.Image.StartsWith("http", StringComparison.OrdinalIgnoreCase)
+                                                ? rp.Image
+                                                : Url.Content("~/assets/images/product-fruit/" + rp.Image));
+                                        <div class="swiper-slide">
+                                            <div class="single-product text-center">
+                                                <div class="product-img mb-2">
+                                                    <a asp-page="/Shop/Detail" asp-route-id="@rp.ProductId">
+                                                        <img src="@relatedImgSrc"
+                                                             alt="@rp.ProductName"
+                                                             class="img-fluid" />
+                                                    </a>
+                                                </div>
+                                                <div class="product-content">
+                                                    <h4 class="sub-title">@rp.Category.CategoryName</h4>
+                                                    <h3 class="title">
+                                                        <a asp-page="/Shop/Detail" asp-route-id="@rp.ProductId">
+                                                            @rp.ProductName
+                                                        </a>
+                                                    </h3>
+                                                    <div class="price-Cart mt-2">
+                                                        <div class="price mb-1">
+                                                            <span class="sale-price">$@rp.Price.ToString("F2")</span>
+                                                        </div>
+                                                        <div class="Cart">
+                                                            <button type="button"
+                                                                    class="btn btn-sm btn-primary cart-icon"
+                                                                    data-product-id="@rp.ProductId"
+                                                                    data-product-name="@rp.ProductName"
+                                                                    data-price="@rp.Price"
+                                                                    data-image-url="@rp.Image">
+                                                                <i class="fas fa-shopping-basket"></i>
+                                                                Add to Cart
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+
+                                <!-- Navigation arrows -->
+                                <div class="swiper-button-next"></div>
+                                <div class="swiper-button-prev"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

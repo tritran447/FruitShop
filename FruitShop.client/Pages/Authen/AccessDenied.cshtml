@@ -1,0 +1,36 @@
+﻿@page
+@model FruitShop.client.Pages.Authen.AccessDeniedModel
+@{
+    ViewData["Title"] = "Page Not Found";
+}
+
+<div class="section page-banner-section bg-light py-5">
+    <div class="container text-center">
+        <h1 class="display-4 mb-3 text-danger">404</h1>
+        <p class="lead mb-4">Oops! We can’t find the page you’re looking for.</p>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb justify-content-center mb-4 bg-transparent">
+                <li class="breadcrumb-item"><a asp-page="/Index">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">404</li>
+            </ol>
+        </nav>
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-6">
+                <img src="~/assets/images/404-modern.png"
+                     alt="Page Not Found"
+                     class="img-fluid rounded shadow-sm" />
+            </div>
+        </div>
+        <p class="mb-4 text-muted">
+            The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.
+        </p>
+        <div>
+            <a asp-page="/Index" class="btn btn-primary btn-lg me-2">
+                <i class="fas fa-home me-1"></i> Back to Home
+            </a>
+            <a asp-page="/Shop" class="btn btn-outline-secondary btn-lg">
+                <i class="fas fa-store me-1"></i> Browse Shop
+            </a>
+        </div>
+    </div>
+</div>

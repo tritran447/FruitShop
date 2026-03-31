@@ -1,0 +1,126 @@
+﻿@page
+@model FruitShop.client.Pages.Customers.ProfileModel
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="container" style="margin-top: 280px">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>My Profile</h2>
+        <div class="btn-group">
+            <!-- Order History button -->
+            <a asp-page="/Customers/OrdersHistory" style="margin-right: 20px"
+               class="btn btn-outline-primary">
+                <i class="bi bi-clock-history"></i> Order History
+            </a>
+
+            <!-- Logout form -->
+            <form method="post" asp-page-handler="Logout">
+                <button type="submit" style="background-color: red" class="btn btn-outline-danger">Logout</button>
+            </form>
+        </div>
+        
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 pe-md-5">
+            @if (Model.Message != null)
+            {
+                <div class="alert @(Model.Success ? "alert-success" : "alert-danger")">
+                    @Model.Message
+                </div>
+            }
+
+            <form method="post">
+                <input type="hidden" asp-for="Profile.CustomerId" />
+                <input type="hidden" asp-for="Profile.Role" />
+
+                <div class="mb-3">
+                    <label asp-for="Profile.FullName" class="form-label">Full Name</label>
+                    <input asp-for="Profile.FullName" class="form-control" />
+                    <span asp-validation-for="Profile.FullName" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Profile.Email" class="form-label">Email</label>
+                    <input asp-for="Profile.Email" class="form-control" readonly />
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Profile.Phone" class="form-label">Phone</label>
+                    <input asp-for="Profile.Phone" class="form-control" />
+                    <span asp-validation-for="Profile.Phone" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Profile.Address" class="form-label">Address</label>
+                    <input asp-for="Profile.Address" class="form-control" />
+                    <span asp-validation-for="Profile.Address" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary">Update Profile</button>
+            </form>
+        </div>
+
+        <div class="col-md-1 d-none d-md-flex justify-content-center">
+            <div style="border-left:1px solid #ccc; height:100%;"></div>
+        </div>
+
+        <div class="col-md-5 ps-md-5">
+            <h3>Change Password</h3>
+            @if (Model.PwdMessage != null)
+            {
+                <div class="alert @(Model.PwdSuccess ? "alert-success" : "alert-danger")">
+                    @Model.PwdMessage
+                </div>
+            }
+            <form id="changePwdForm" method="post" asp-page-handler="ChangePassword" class="mt-4">
+                <div class="mb-3">
+                    <label asp-for="Pwd.OldPassword" class="form-label">Current Password</label>
+                    <input asp-for="Pwd.OldPassword" type="password" class="form-control" />
+                    <span asp-validation-for="Pwd.OldPassword" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Pwd.NewPassword" class="form-label">New Password</label>
+                    <input id="newPwd" asp-for="Pwd.NewPassword" type="password" class="form-control" />
+                    <span asp-validation-for="Pwd.NewPassword" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Pwd.ConfirmPassword" class="form-label">Confirm New Password</label>
+                    <input id="confirmPwd" asp-for="Pwd.ConfirmPassword" type="password" class="form-control" />
+                    <span asp-validation-for="Pwd.ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <div id="pwdMatchError" class="text-danger mb-3" style="display:none;">
+                    New password and confirmation do not match.
+                </div>
+
+                <button id="changePwdBtn" type="submit" class="btn btn-secondary">Change Password</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        (function() {
+            const form = document.getElementById('changePwdForm');
+            const newPwd = document.getElementById('newPwd');
+            const confirmPwd = document.getElementById('confirmPwd');
+            const errorDiv = document.getElementById('pwdMatchError');
+
+            form.addEventListener('submit', function(e) {
+                if (newPwd.value !== confirmPwd.value) {
+                    e.preventDefault();            
+                    errorDiv.style.display = 'block'; 
+                } else {
+                    errorDiv.style.display = 'none';
+                }
+            });
+
+            confirmPwd.addEventListener('input', function() {
+                if (newPwd.value === confirmPwd.value) {
+                    errorDiv.style.display = 'none';
+                }
+            });
+        })();
+    </script>
+}

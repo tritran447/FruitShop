@@ -1,0 +1,296 @@
+@page
+@model FruitShop.client.Pages.Admin.Dashboard.IndexModel
+@using System.Text.Json
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container" style="margin-top: 220px;">
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
+        <div>
+            <h2 class="mb-1 fw-bold">Dashboard</h2>
+            <div class="text-muted">
+                Tổng quan hiệu suất cửa hàng và các chỉ số quan trọng.
+            </div>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <a class="btn btn-outline-secondary" asp-page="/Admin/Products/Index">
+                Quản lý sản phẩm
+            </a>
+            <a class="btn btn-outline-secondary" asp-page="/Admin/Users/Index">
+                Quản lý khách hàng
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-md-4">
+            <div class="card kpi-card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-start justify-content-between">
+                        <div>
+                            <div class="text-muted small">Doanh thu hôm nay</div>
+                            <div class="kpi-value mt-1">@Model.Revenue.Today.ToString("C")</div>
+                        </div>
+                        <div class="kpi-icon bg-success-subtle text-success">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                    </div>
+                    <div class="text-muted small mt-2">
+                        Cập nhật theo đơn hàng <span class="fw-semibold">Completed</span>.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="card kpi-card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-start justify-content-between">
+                        <div>
+                            <div class="text-muted small">Doanh thu tháng này</div>
+                            <div class="kpi-value mt-1">@Model.Revenue.ThisMonth.ToString("C")</div>
+                        </div>
+                        <div class="kpi-icon bg-primary-subtle text-primary">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                    </div>
+                    <div class="text-muted small mt-2">
+                        Tính theo tháng hiện tại.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="card kpi-card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-start justify-content-between">
+                        <div>
+                            <div class="text-muted small">Doanh thu năm nay</div>
+                            <div class="kpi-value mt-1">@Model.Revenue.ThisYear.ToString("C")</div>
+                        </div>
+                        <div class="kpi-icon bg-warning-subtle text-warning">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                    </div>
+                    <div class="text-muted small mt-2">
+                        Tổng doanh thu của năm hiện tại.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-lg-8">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div>
+                            <div class="fw-semibold">Top sản phẩm bán chạy</div>
+                            <div class="text-muted small">Top 5 theo tổng số lượng bán.</div>
+                        </div>
+                        <span class="badge rounded-pill text-bg-light">
+                            @Model.TopProducts.Count sản phẩm
+                        </span>
+                    </div>
+
+                    @if (Model.TopProducts == null || !Model.TopProducts.Any())
+                    {
+                        <div class="empty-state">
+                            <div class="empty-icon"><i class="far fa-chart-bar"></i></div>
+                            <div class="fw-semibold">Chưa có dữ liệu bán hàng</div>
+                            <div class="text-muted small">
+                                Khi có đơn hàng phát sinh, biểu đồ sẽ hiển thị top sản phẩm.
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="chart-wrap">
+                            <canvas id="topProductsChart" height="120"></canvas>
+                        </div>
+
+                        <div class="table-responsive mt-3">
+                            <table class="table table-sm align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width: 60px;">#</th>
+                                        <th>Sản phẩm</th>
+                                        <th class="text-end">Đã bán</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        var ranked = Model.TopProducts
+                                            .OrderByDescending(x => x.TotalQuantitySold)
+                                            .ToList();
+                                    }
+                                    @for (int i = 0; i < ranked.Count; i++)
+                                    {
+                                        <tr>
+                                            <td class="text-muted">@(@i + 1)</td>
+                                            <td class="fw-semibold">@ranked[i].ProductName</td>
+                                            <td class="text-end">@ranked[i].TotalQuantitySold</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div>
+                            <div class="fw-semibold">Cơ cấu doanh thu</div>
+                            <div class="text-muted small">Hôm nay / Tháng / Năm</div>
+                        </div>
+                        <div class="kpi-icon bg-info-subtle text-info">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                    </div>
+
+                    <div class="chart-wrap">
+                        <canvas id="revenueChart" height="180"></canvas>
+                    </div>
+
+                    <div class="mt-3">
+                        <div class="d-flex align-items-center justify-content-between py-1">
+                            <div class="text-muted small">Khách hàng hoạt động</div>
+                            <div class="fw-semibold">@Model.ActiveCustomerCount</div>
+                        </div>
+                        <div class="text-muted small">
+                            (Role = <span class="fw-semibold">User</span> &amp; đã verify)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <style>
+        .kpi-card {
+            border-radius: 16px;
+        }
+        .kpi-value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+        .kpi-icon {
+            width: 44px;
+            height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-size: 18px;
+        }
+        .chart-wrap {
+            position: relative;
+            width: 100%;
+        }
+        .empty-state {
+            border: 1px dashed #e5e7eb;
+            border-radius: 16px;
+            padding: 22px;
+            text-align: center;
+            background: #fafafa;
+        }
+        .empty-icon {
+            width: 52px;
+            height: 52px;
+            margin: 0 auto 10px;
+            border-radius: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #f3f4f6;
+            color: #6b7280;
+            font-size: 20px;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const hasTop = @((Model.TopProducts != null && Model.TopProducts.Any()) ? "true" : "false");
+            if (hasTop === "true") {
+                const productLabels = @Html.Raw(JsonSerializer.Serialize((Model.TopProducts ?? new List<ProductSaleDto>()).Select(p => p.ProductName)));
+                const productSales = @Html.Raw(JsonSerializer.Serialize((Model.TopProducts ?? new List<ProductSaleDto>()).Select(p => p.TotalQuantitySold)));
+
+                new Chart(document.getElementById("topProductsChart"), {
+                    type: "bar",
+                    data: {
+                        labels: productLabels,
+                        datasets: [{
+                            label: "Đã bán",
+                            data: productSales,
+                            backgroundColor: "rgba(59, 130, 246, 0.25)",
+                            borderColor: "rgba(59, 130, 246, 1)",
+                            borderWidth: 2,
+                            borderRadius: 10,
+                            barThickness: 22
+                        }]
+                    },
+                    options: {
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (ctx) {
+                                        return `Đã bán: ${ctx.parsed.y}`;
+                                    }
+                                }
+                            }
+                        },
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                grid: { display: false },
+                                ticks: { maxRotation: 0 }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                grid: { color: "rgba(148, 163, 184, 0.2)" }
+                            }
+                        }
+                    }
+                });
+            }
+
+            new Chart(document.getElementById("revenueChart"), {
+                type: "doughnut",
+                data: {
+                    labels: ["Today", "This Month", "This Year"],
+                    datasets: [{
+                        data: [
+                            @Model.Revenue.Today,
+                            @Model.Revenue.ThisMonth,
+                            @Model.Revenue.ThisYear
+                        ],
+                        backgroundColor: [
+                            "rgba(16, 185, 129, 0.85)",
+                            "rgba(59, 130, 246, 0.85)",
+                            "rgba(245, 158, 11, 0.85)"
+                        ],
+                        borderColor: "#fff",
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: { position: "bottom" }
+                    },
+                    responsive: true,
+                    cutout: "62%"
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,13 @@
+﻿@page
+@model FruitShop.client.Pages.Cart.SuccessModel
+
+<div class="container py-5" style="margin-top:250px">
+    <h2>Thank you! Your order has been placed.</h2>
+    <p>You can view your orders in your profile.</p>
+</div>
+
+@section Scripts {
+    <script>
+        sessionStorage.removeItem('myShopCart');
+    </script>
+}

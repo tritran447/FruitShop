@@ -1,0 +1,130 @@
+@page
+@model FruitShop.client.Pages.Cart.IndexModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "My Cart";
+}
+
+
+<div class="container py-5" style="margin-top:250px">
+    <h2>My Cart</h2>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Product</th>
+                <th>Unit Price</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="cartBody"></tbody>
+        <tfoot>
+            <tr>
+                <th colspan="4" class="text-end">Total:</th>
+                <th id="totalAmount">$0.00</th>
+                <th></th>
+            </tr>
+        </tfoot>
+    </table>
+
+    <hr />
+
+    <h4>Shipping & Checkout</h4>
+    <form method="post" id="checkoutForm">
+        <div class="mb-3">
+            <label asp-for="ShipAddress" class="form-label">Shipping Address</label>
+            <input asp-for="ShipAddress" class="form-control" />
+            <span asp-validation-for="ShipAddress" class="text-danger"></span>
+        </div>
+
+        <!-- hidden field để JS bung JSON cart vào đây -->
+        <input type="hidden" asp-for="CartData" id="CartData" />
+
+        <button type="submit" id="placeOrderBtn" class="btn btn-primary">Place Order</button>
+    </form>
+</div>
+
+<!-- VNPAY Overlay (Optional - shows behind the popup) -->
+<div class="modal fade" id="vnpayStatusModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 1.5rem;">
+            <div class="modal-body p-5 text-center">
+                <div class="spinner-border text-primary mb-4" style="width: 3rem; height: 3rem;" role="status"></div>
+                <h4 class="fw-bold">Đang mở cổng thanh toán...</h4>
+                <p class="text-muted">Vui lòng hoàn tất thanh toán trong cửa sổ mới vừa mở.</p>
+                <hr />
+                <button type="button" class="btn btn-outline-secondary rounded-pill" onclick="window.location.href='/Cart/Success'">Tôi đã thanh toán xong</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/cart.js"></script>
+    <script>
+        // Trước khi submit, đổ JSON cart vào hidden field
+        document.getElementById('checkoutForm').addEventListener('submit', () => {
+          const cartJson = JSON.stringify(getCart());
+          document.getElementById('CartData').value = cartJson;
+        });
+
+        // Xử lý VNPAY sau khi Place Order thành công
+        @if (Model.CreatedOrder != null)
+        {
+            <text>
+            $(document).ready(function () {
+                const orderData = {
+                    orderCode: '@Model.CreatedOrder.OrderCode',
+                    fullName: 'Customer', // Hoặc lấy từ customer object
+                    description: 'Thanh toan don hang @Model.CreatedOrder.OrderCode',
+                    amount: @Model.CreatedOrder.TotalAmount,
+                    createdDate: '@Model.CreatedOrder.OrderDate.ToString("yyyy-MM-ddTHH:mm:ss")'
+                };
+
+                const statusModal = new bootstrap.Modal(document.getElementById('vnpayStatusModal'));
+                statusModal.show();
+
+                $.ajax({
+                    url: 'http://localhost:5287/api/payment/create',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(orderData),
+                    success: function (response) {
+                        if (response && response.paymentUrl) {
+                            // Xóa giỏ hàng local
+                            localStorage.removeItem('cart');
+
+                            // Mở cửa sổ thanh toán mới (Popup)
+                            const width = 600;
+                            const height = 800;
+                            const left = (window.innerWidth / 2) - (width / 2);
+                            const top = (window.innerHeight / 2) - (height / 2);
+                            
+                            window.open(response.paymentUrl, 'VNPAY Payment', 
+                                `width=${width},height=${height},top=${top},left=${left},scrollbars=yes,resizable=yes`);
+                        } else {
+                            alert('Không thể khởi tạo link thanh toán VNPAY.');
+                        }
+                    },
+                    error: function (xhr) {
+                        console.error(xhr);
+                        alert('Lỗi kết nối đến cổng thanh toán.');
+                    }
+                });
+            });
+            </text>
+        }
+    </script>
+
+    <style>
+        .bg-gradient {
+            background: linear-gradient(135deg, #005baa 0%, #00a4e4 100%);
+        }
+        #vnpayModal .modal-content {
+            box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+        }
+    </style>
+}

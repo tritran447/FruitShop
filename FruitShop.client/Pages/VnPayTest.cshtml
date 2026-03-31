@@ -1,0 +1,72 @@
+@page
+@model FruitShop.client.Pages.VnPayTestModel
+@{
+    ViewData["Title"] = "VNPAY Payment Test";
+}
+
+<div class="container mt-5">
+    <h2>VNPAY Payment Test</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card p-4 shadow-sm">
+                <h4>Order Summary</h4>
+                <p>Order Code: <strong>@Model.OrderCode</strong></p>
+                <p>Amount: <strong class="text-primary">@Model.Amount.ToString("N0") VND</strong></p>
+                <button type="button" class="btn btn-primary" id="btnPayQR">
+                    <i class="bi bi-qr-code"></i> Thanh toán QR
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- VNPAY Modal -->
+<div class="modal fade" id="vnpayModal" tabindex="-1" aria-labelledby="vnpayModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="vnpayModalLabel">VNPAY Payment Gateway</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <iframe id="vnpayIframe" src="" style="width: 100%; height: 600px; border: none;"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#btnPayQR').click(function () {
+                const paymentRequest = {
+                    orderCode: '@Model.OrderCode',
+                    fullName: 'Customer Name',
+                    description: 'Test Payment',
+                    amount: @Model.Amount,
+                    createdDate: new Date().toISOString()
+                };
+
+                $.ajax({
+                    url: 'http://localhost:5287/api/payment/create',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(paymentRequest),
+                    success: function (response) {
+                        $('#vnpayIframe').attr('src', response.paymentUrl);
+                        var vnpayModal = new bootstrap.Modal(document.getElementById('vnpayModal'));
+                        vnpayModal.show();
+                    },
+                    error: function (error) {
+                        alert('Could not create payment URL. Make sure the API is running at http://localhost:5287.');
+                    }
+                });
+            });
+
+            // Listen for messages from the iframe if needed, or wait for redirection
+            // Since we're in an iframe, the returnUrl in the API should ideally point to a simple 'success' page
+            // that uses window.parent to close the modal.
+        });
+    </script>
+}
