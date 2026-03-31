@@ -17,8 +17,14 @@
             <a class="btn btn-outline-secondary" asp-page="/Admin/Products/Index">
                 Quản lý sản phẩm
             </a>
+            <a class="btn btn-outline-secondary" asp-page="/Admin/Categories/Index">
+                Quản lý danh mục
+            </a>
             <a class="btn btn-outline-secondary" asp-page="/Admin/Users/Index">
                 Quản lý khách hàng
+            </a>
+            <a class="btn btn-outline-secondary" asp-page="/Admin/Orders/Index">
+                Quản lý đơn hàng
             </a>
         </div>
     </div>
@@ -106,11 +112,11 @@
                     }
                     else
                     {
-                        <div class="chart-wrap">
-                            <canvas id="topProductsChart" height="120"></canvas>
+                        <div class="chart-wrap mb-1">
+                            <canvas id="topProductsChart" height="100"></canvas>
                         </div>
 
-                        <div class="table-responsive mt-3">
+                        <div class="table-responsive mt-1">
                             <table class="table table-sm align-middle mb-0">
                                 <thead class="table-light">
                                     <tr>

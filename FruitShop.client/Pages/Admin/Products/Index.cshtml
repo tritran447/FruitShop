@@ -49,7 +49,7 @@
             </td>
             <td>@p.Price.ToString("C")</td>
             <td>@(p.QuantityInStock?.ToString() ?? "-")</td>
-            <td>@(p.CategoryId?.ToString() ?? "-")</td>
+            <td>@(Model.Categories.FirstOrDefault(c => c.CategoryId == p.CategoryId)?.CategoryName ?? p.CategoryId?.ToString() ?? "-")</td>
             <td>
               @if (!string.IsNullOrEmpty(p.Image))
               {
@@ -131,7 +131,7 @@
     <!-- Create Modal -->
     <div class="modal fade" id="createModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
-            <form method="post" asp-page-handler="Create" class="modal-content">
+            <form method="post" asp-page-handler="Create" class="modal-content" enctype="multipart/form-data">
                 <div class="modal-header">
                     <h5 class="modal-title">Create Product</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -143,8 +143,14 @@
                             <input asp-for="CreateProduct.ProductName" class="form-control" />
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Category ID</label>
-                            <input asp-for="CreateProduct.CategoryId" type="number" class="form-control" />
+                            <label class="form-label">Category</label>
+                            <select asp-for="CreateProduct.CategoryId" class="form-select">
+                                <option value="">-- Select Category --</option>
+                                @foreach (var cat in Model.Categories)
+                                {
+                                    <option value="@cat.CategoryId">@cat.CategoryName</option>
+                                }
+                            </select>
                         </div>
                         <div class="col-12 mb-3">
                             <label class="form-label">Description</label>
@@ -166,8 +172,8 @@
                             </select>
                         </div>
                         <div class="col-12 mb-3">
-                            <label class="form-label">Image filename</label>
-                            <input asp-for="CreateProduct.Image" class="form-control" />
+                            <label class="form-label">Image</label>
+                            <input asp-for="CreateImageFile" type="file" class="form-control" accept="image/*" />
                         </div>
                     </div>
                 </div>
@@ -182,7 +188,7 @@
     <!-- Edit Modal -->
     <div class="modal fade" id="editModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
-            <form method="post" asp-page-handler="Edit" class="modal-content">
+            <form method="post" asp-page-handler="Edit" class="modal-content" enctype="multipart/form-data">
                 <div class="modal-header">
                     <h5 class="modal-title">Edit Product</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -195,8 +201,14 @@
                             <input asp-for="EditProduct.ProductName" class="form-control" id="edit-name" />
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Category ID</label>
-                            <input asp-for="EditProduct.CategoryId" type="number" class="form-control" id="edit-cat" />
+                            <label class="form-label">Category</label>
+                            <select asp-for="EditProduct.CategoryId" class="form-select" id="edit-cat">
+                                <option value="">-- Select Category --</option>
+                                @foreach (var cat in Model.Categories)
+                                {
+                                    <option value="@cat.CategoryId">@cat.CategoryName</option>
+                                }
+                            </select>
                         </div>
                         <div class="col-12 mb-3">
                             <label class="form-label">Description</label>
@@ -218,8 +230,10 @@
                             </select>
                         </div>
                         <div class="col-12 mb-3">
-                            <label class="form-label">Image filename</label>
-                            <input asp-for="EditProduct.Image" class="form-control" id="edit-image" />
+                            <label class="form-label">Image</label>
+                            <input type="hidden" asp-for="EditProduct.Image" id="edit-image-hidden" />
+                            <input asp-for="EditImageFile" type="file" class="form-control" accept="image/*" />
+                            <small class="text-muted" id="edit-image-info"></small>
                         </div>
                     </div>
                 </div>
@@ -261,9 +275,9 @@
           document.querySelector('textarea[name="CreateProduct.Description"]').value = '';
           document.querySelector('input[name="CreateProduct.Price"]').value       = '';
           document.querySelector('input[name="CreateProduct.QuantityInStock"]').value = '';
-          document.querySelector('input[name="CreateProduct.CategoryId"]').value    = '';
+          document.querySelector('select[name="CreateProduct.CategoryId"]').value    = '';
           document.querySelector('select[name="CreateProduct.Status"]').value      = 'true';
-          document.querySelector('input[name="CreateProduct.Image"]').value       = '';
+          document.querySelector('input[name="CreateImageFile"]').value       = '';
         });
 
         // populate EDIT form
@@ -276,7 +290,13 @@
           document.getElementById('edit-price').value   = b.dataset.price;
           document.getElementById('edit-qty').value     = b.dataset.qty;
           document.getElementById('edit-cat').value     = b.dataset.cat;
-          document.getElementById('edit-image').value   = b.dataset.image;
+          document.getElementById('edit-image-hidden').value   = b.dataset.image;
+          if (b.dataset.image) {
+              document.getElementById('edit-image-info').textContent = "Current image: " + b.dataset.image;
+          } else {
+              document.getElementById('edit-image-info').textContent = "No current image";
+          }
+          document.querySelector('input[name="EditImageFile"]').value = '';
           document.getElementById('edit-status').value  = b.dataset.status;
         });
 
