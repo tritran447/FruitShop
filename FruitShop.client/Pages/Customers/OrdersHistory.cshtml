@@ -1,0 +1,54 @@
+﻿@page
+@model FruitShop.client.Pages.Customers.OrdersHistoryModel
+@{
+    ViewData["Title"] = "My Order History";
+}
+
+<div class="container" style="margin-top:280px">
+    <h2>@ViewData["Title"]</h2>
+
+    @if (!Model.History.Any())
+    {
+        <div class="alert alert-info mt-4">
+            You have not placed any orders yet.
+        </div>
+    }
+    else
+    {
+        <table class="table table-striped mt-4">
+            <thead class="table-light">
+                <tr>
+                    <th>Order #</th>
+                    <th>Date</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Ship To</th>
+                    <th>Items</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var o in Model.History)
+                {
+                    <tr>
+                        <td>@o.OrderId</td>
+                        <td>@o.OrderDate.ToString("g")</td>
+                        <td>@o.TotalAmount.ToString("C")</td>
+                        <td>@o.Status</td>
+                        <td>@o.ShipAddress</td>
+                        <td>
+                            <ul class="mb-0 ps-3">
+                                @foreach (var item in o.Items)
+                                {
+                                    <li>
+                                        @item.Quantity × @item.ProductName
+                                        (<span class="text-muted">@item.LineTotal.ToString("C")</span>)
+                                    </li>
+                                }
+                            </ul>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

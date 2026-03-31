@@ -1,0 +1,59 @@
+﻿@page
+@model FruitShop.client.Pages.Cart.IndexModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "My Cart";
+}
+
+
+<div class="container py-5" style="margin-top:250px">
+    <h2>My Cart</h2>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Product</th>
+                <th>Unit Price</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="cartBody"></tbody>
+        <tfoot>
+            <tr>
+                <th colspan="4" class="text-end">Total:</th>
+                <th id="totalAmount">$0.00</th>
+                <th></th>
+            </tr>
+        </tfoot>
+    </table>
+
+    <hr />
+
+    <h4>Shipping & Checkout</h4>
+    <form method="post" id="checkoutForm">
+        <div class="mb-3">
+            <label asp-for="ShipAddress" class="form-label">Shipping Address</label>
+            <input asp-for="ShipAddress" class="form-control" />
+            <span asp-validation-for="ShipAddress" class="text-danger"></span>
+        </div>
+
+        <!-- hidden field để JS bung JSON cart vào đây -->
+        <input type="hidden" asp-for="CartData" id="CartData" />
+
+        <button type="submit" id="placeOrderBtn" class="btn btn-primary">Place Order</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/cart.js"></script>
+    <script>
+        // Trước khi submit, đổ JSON cart vào hidden field
+        document.getElementById('checkoutForm').addEventListener('submit', () => {
+          const cartJson = JSON.stringify(getCart());
+          document.getElementById('CartData').value = cartJson;
+        });
+    </script>
+}
