@@ -1,10 +1,11 @@
 ## .NET / Visual Studio
+.vs/
 bin/
 obj/
 *.user
 *.suo
-.vs/
 *.userosscache
+*.userosscope
 *.sln.docstates
 
 ## Build results
@@ -12,9 +13,13 @@ obj/
 [Rr]elease/
 x64/
 x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
 bld/
 [Bb]in/
 [Oo]bj/
+[Ll]og/
+[Ll]ogs/
 
 ## NuGet
 *.nupkg
@@ -25,9 +30,18 @@ project.lock.json
 project.fragment.lock.json
 artifacts/
 
-## OS
+## User-specific files
+*.rsuser
+
+## OS Files
 Thumbs.db
+ehthumbs.db
+Desktop.ini
 .DS_Store
 
 ## Logs
 *.log
+
+## Sensitive config
+appsettings.Production.json
+appsettings.Staging.json
