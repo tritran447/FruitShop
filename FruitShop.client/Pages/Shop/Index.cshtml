@@ -1,0 +1,289 @@
+﻿@page
+@model FruitShop.client.Pages.Shop.IndexModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Shop Grid";
+}
+
+<!-- Page Banner Start -->
+<div class="section page-banner-section">
+    <div class="container-fluid custom-container">
+        <div class="page-banner-wrap" style="background-image: url(assets/images/bg/banner-bg.jpg);">
+            <img class="shape-1" src="assets/images/shape/hero2-shape1.png" alt="" />
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="page-banner text-center">
+                        <h2 class="title">Shop Grid</h2>
+                        <ul class="breadcrumb justify-content-center">
+                            <li class="breadcrumb-item"><a asp-page="/Index">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Shop Grid</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Page Banner End -->
+<!-- Shop Section -->
+<div class="section section-padding">
+    <div class="container">
+        <div class="row">
+
+            <!-- Sidebar -->
+            <div class="col-xl-3 col-lg-4">
+                <div class="sidebar-wrap-02">
+
+                    <!-- Categories Filter -->
+                    <div class="sidebar-widget-02">
+                        <h3 class="widget-title">Category</h3>
+                        <div class="widget-checkbox">
+                            <ul class="checkbox-list">
+                                @foreach (var cat in Model.Categories)
+                                {
+                                    <li class="form-check">
+                                        <input class="form-check-input"
+                                               type="checkbox"
+                                               value="@cat.CategoryId"
+                                               id="cat_@cat.CategoryId"
+                                               onchange="onFilterChange()"
+                                               @(Model.CategoryFilter == cat.CategoryId ? "checked" : "") />
+                                        <label class="form-check-label" for="cat_@cat.CategoryId">
+                                            @cat.CategoryName (@(Model.AllProducts?.Count(p => p.CategoryId == cat.CategoryId) ?? 0))
+                                        </label>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Popular Products -->
+                    <div class="sidebar-widget-02">
+                        <h3 class="widget-title">Popular Products</h3>
+                        <div class="popular-product-wrap">
+                            @foreach (var p in Model.PopularProducts)
+                            {
+                                <div class="popular-product-item mb-3">
+                                    <div class="product-img">
+                                        <img src="~/assets/images/product-fruit/@p.Image"
+                                             alt="@p.ProductName" />
+                                    </div>
+                                    <div class="product-content">
+                                        <div class="price mb-1">
+                                            <span class="sale-price">$@p.Price</span>
+                                        </div>
+                                        <h3 class="title">
+                                            <a asp-page="/Shop/Detail" asp-route-id="@p.ProductId">
+                                                @p.ProductName
+                                            </a>
+                                        </h3>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Main Products -->
+            <div class="col-xl-9 col-lg-8">
+
+                <!-- Search & Sort Bar -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="d-flex align-items-center">
+                        <form method="get" action="/Shop" class="me-4">
+                            <input type="text"
+                                   name="Search"
+                                   value="@(Request.Query["Search"].FirstOrDefault() ?? "")"
+                                   placeholder="Search Products..."
+                                   class="form-control form-control-sm"
+                                   style="width:200px; display:inline-block;" />
+                            <button type="submit" class="btn btn-sm btn-outline-secondary ms-1">
+                                <i class="flaticon-loupe"></i>
+                            </button>
+                        </form>
+
+                        @if (!string.IsNullOrWhiteSpace(Model.Search))
+                        {
+                            <div>
+                                Search results for “<strong>@Model.Search</strong>”:
+                                @Model.PagedProducts.Count of @Model.TotalCount
+                            </div>
+                        }
+                        else
+                        {
+                            <div>
+                                Showing @Model.PagedProducts.Count of @Model.TotalCount results
+                            </div>
+                        }
+                    </div>
+
+                    <div class="d-flex align-items-center">
+                        <label class="me-2 mb-0">Sort by:</label>
+                        <select id="sortSelect"
+                                class="form-select form-select-sm"
+                                style="width:auto"
+                                onchange="onSortChange(this.value)">
+                            <option value="price_asc"
+                                    selected="@(Model.Sort == "price_asc")">Price ↑</option>
+                            <option value="price_desc"
+                                    selected="@(Model.Sort == "price_desc")">Price ↓</option>
+                            <option value="default"
+                                    selected="@(Model.Sort == "default")">Default</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Products Grid -->
+                <div class="row">
+                    @if (!Model.PagedProducts.Any())
+                    {
+                        <div class="col-12"><h2>No products found.</h2></div>
+                    }
+                    else
+                    {
+                        @foreach (var p in Model.PagedProducts)
+                        {
+                            <div class="col-xl-4 col-sm-6 mb-4">
+                                <div class="single-product">
+                                    <div class="product-img text-center">
+                                        <a asp-page="/Shop/Detail" asp-route-id="@p.ProductId">
+                                            <img src="~/assets/images/product-fruit/@p.Image"
+                                                 alt="@p.ProductName" />
+                                        </a>
+                                    </div>
+                                    <div class="product-content text-center">
+                                        <h3 class="title">
+                                            <a asp-page="/Shop/Detail" asp-route-id="@p.ProductId">
+                                                @p.ProductName
+                                            </a>
+                                        </h3>
+                                        <div class="price-cart d-flex justify-content-center align-items-center">
+                                            <div class="price me-3">
+                                                <span class="sale-price">$@p.Price</span>
+                                            </div>
+                                            <div class="cart">
+                                                <button class="cart-icon btn btn-link p-0 position-relative"
+                                                        type="button"
+                                                        data-product-id="@p.ProductId"
+                                                        data-product-name="@p.ProductName"
+                                                        data-price="@p.Price"
+                                                        data-image-url="@p.Image">
+                                                    <i class="fas fa-shopping-basket"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+
+                <!-- Pagination -->
+                @if (Model.TotalPages > 1)
+                {
+                    <div class="argani-pagination">
+                        <ul class="pagination justify-content-center">
+                            @if (Model.PageIndex > 1)
+                            {
+                                <li>
+                                    <a href="javascript:goToPage(@(Model.PageIndex - 1))">
+                                        <i class="fa fa-angle-left"></i>
+                                    </a>
+                                </li>
+                            }
+
+                            @{
+                                int startPage = Math.Max(1, Model.PageIndex - 2);
+                                int endPage = Math.Min(Model.TotalPages, Model.PageIndex + 2);
+                                if (endPage - startPage < 4)
+                                {
+                                    if (startPage == 1)
+                                        endPage = Math.Min(Model.TotalPages, startPage + 4);
+                                    else if (endPage == Model.TotalPages)
+                                        startPage = Math.Max(1, endPage - 4);
+                                }
+                            }
+
+                            @if (startPage > 1)
+                            {
+                                <li><a href="javascript:goToPage(1)">1</a></li>
+                                @if (startPage > 2)
+                                {
+                                    <li><span>...</span></li>
+                                }
+                            }
+
+                            @for (int i = startPage; i <= endPage; i++)
+                            {
+                                <li>
+                                    <a class="@(i == Model.PageIndex ? "active" : "")"
+                                       href="javascript:goToPage(@i)">
+                                        @i
+                                    </a>
+                                </li>
+                            }
+
+                            @if (endPage < Model.TotalPages)
+                            {
+                                @if (endPage < Model.TotalPages - 1)
+                                {
+                                    <li><span>...</span></li>
+                                }
+                                <li>
+                                    <a href="javascript:goToPage(@Model.TotalPages)">
+                                        @Model.TotalPages
+                                    </a>
+                                </li>
+                            }
+
+                            @if (Model.PageIndex < Model.TotalPages)
+                            {
+                                <li>
+                                    <a href="javascript:goToPage(@(Model.PageIndex + 1))">
+                                        <i class="fa fa-angle-right"></i>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function buildQuery(page, sort, cat) {
+            const params = new URLSearchParams();
+            params.set('pageIndex', page);
+            params.set('pageSize', '@Model.PageSize');
+            params.set('sort', sort || '@Model.Sort');
+            if (cat) params.set('categoryFilter', cat);
+            if ('@Model.Search' !== '') {
+                params.set('Search', '@Model.Search');
+            }
+            return params.toString();
+        }
+
+        function goToPage(page) {
+            const cat = document.querySelector('input.form-check-input:checked')?.value;
+            const sort = document.getElementById('sortSelect').value;
+            window.location.search = buildQuery(page, sort, cat);
+        }
+
+        function onSortChange(sort) {
+            const cat = document.querySelector('input.form-check-input:checked')?.value;
+            window.location.search = buildQuery(1, sort, cat);
+        }
+
+        function onFilterChange() {
+            const sort = document.getElementById('sortSelect').value;
+            const cat = document.querySelector('input.form-check-input:checked')?.value;
+            window.location.search = buildQuery(1, sort, cat);
+        }
+    </script>
+}
